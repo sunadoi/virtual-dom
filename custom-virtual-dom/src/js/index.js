@@ -1,6 +1,5 @@
 import { app } from './vdom/app';
 import h from './vdom/createElement'
-import { render } from './vdom/render'
 
 const INITIAL_STATE = {
   accounts: [
@@ -31,7 +30,20 @@ const INITIAL_STATE = {
   ],
 };
 
-const accountItem = (account) => {
+const actions = {
+  toggleFollow(state, id) {
+    const accounts = state.accounts.map((f) => {
+      if (f.id === id) {
+        return { ...f, isFollow: !f.isFollow };
+      } else {
+        return f;
+      }
+    });
+    return { ...state, accounts };
+  },
+};
+
+const accountItem = (account, action) => {
   return h("div", {
     attrs: {},
     children: [
@@ -64,7 +76,7 @@ const accountItem = (account) => {
                 attrs: {
                   type: "button",
                   class: `followBtn ${account.isFollow ? "isFollow" : ""}`,
-                  onclick: () => alert(account.name),
+                  onclick: () => action.toggleFollow(account.id),
                 },
                 children: [account.isFollow ? "フォロー中" : "フォローする"],
               }),
@@ -82,7 +94,7 @@ const accountItem = (account) => {
   });
 };
 
-const view = (props) =>
+const view = (props, action) =>
   h("ul", {
     attrs: {
       class: "accountList",
@@ -92,7 +104,7 @@ const view = (props) =>
         attrs: {
           class: "accountList__item",
         },
-        children: [accountItem(e)],
+        children: [accountItem(e, action)],
       });
     }),
   });
@@ -101,4 +113,5 @@ app({
   root: "#app",
   initialState: INITIAL_STATE,
   view,
+  actions,
 });

@@ -26,7 +26,7 @@ function renderElement({ tagName, attrs, children }) {
 
 export function render(vNode) {
   if (typeof vNode === "string") {
-    return document.createTextNode(vNode);
+    return document.createTextNode(vNode); // <p>text</p>
   }
   return renderElement(vNode);
 }
