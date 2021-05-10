@@ -25,6 +25,7 @@ const hasChanged = (oldNode, newNode) => {
   return "NONE";
 };
 
+// 古いattrを全て削除し、新しいものを再設定している
 const updateAttrs = (target, oldAttrs, newAttrs) => {
   for (const attr in oldAttrs) {
     if (!isEventAttr(attr)) {
@@ -46,6 +47,7 @@ const updateAttrs = (target, oldAttrs, newAttrs) => {
   index: childrenのindex
 
   parentは最初rootの要素であり、この関数内で再起的に呼び出される
+  関数内でparentを変更している部分が実際にDOMを変更している部分
 */
 export const patch = (parent, newNode, oldNode, index = 0) => {
   // oldNodeがない。主に初期レンダリング
